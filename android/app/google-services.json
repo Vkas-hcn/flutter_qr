@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "12322",
+    "project_id": "taskplan-12322",
+    "storage_bucket": "taskplan-12322.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24809718471012:android:f7e2dd05df7620730334fd",
+        "android_client_info": {
+          "package_name": "com.ksdie.ques.rjh.qr"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQA-aW0nZyki00RlH76dwBXoXfmzXZgsd"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

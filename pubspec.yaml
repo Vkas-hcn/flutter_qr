@@ -1,0 +1,63 @@
+name: flutter_qr
+description: "A new Flutter project."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.19.4 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  provider: ^6.0.0
+  fluttertoast: ^8.0.9
+  shared_preferences: ^2.0.6
+  image_picker: ^1.0.2
+  url_launcher: ^6.1.0
+  path_provider: ^2.0.11
+  path: ^1.8.3
+  google_mobile_ads: ^2.0.0
+  firebase_core: ^3.1.1
+  firebase_remote_config: ^5.0.2
+  facebook_app_events: ^0.19.2
+  http: ^1.2.1
+  device_info_plus: ^10.1.0
+  package_info_plus: ^8.0.0
+  uuid: ^4.4.0
+  advertising_id: ^2.6.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.9.2
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/ic_laund.jpg"
+  adaptive_icon_background: "#22305C"
+  adaptive_icon_foreground: "assets/ic_laund.jpg"
+
+
+
+flutter:
+  fonts:
+    - family: poppins
+      fonts:
+        - asset: assets/fonts/poppins.ttf
+  uses-material-design: true
+  assets:
+    - assets/ic_laund.jpg
+    - assets/fonts/poppins.ttf
+    - assets/img/bg_start.webp
+    - assets/img/bg_button.webp
+    - assets/img/bg_main.webp
+    - assets/img/icon_create.webp
+    - assets/img/icon_direction.webp
+    - assets/img/icon_menu.webp
+    - assets/img/icon_qr_home.webp

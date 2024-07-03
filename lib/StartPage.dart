@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_qr/HomePage.dart';
 import 'package:flutter_qr/SettingPaper.dart';
 
 
@@ -25,7 +26,6 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen>{
-  DateTime? _pausedTime;
   double _progress = 0.0;
   Timer? _timer;
   @override
@@ -36,7 +36,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>{
       Future.delayed(const Duration(seconds: 2), () {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const SettingPaper()),
+          MaterialPageRoute(builder: (context) => const HomePage()),
         );
       });
     });

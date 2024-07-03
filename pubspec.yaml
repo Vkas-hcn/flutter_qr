@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  loading_animation_widget: ^1.2.1
   provider: ^6.0.0
   fluttertoast: ^8.0.9
   shared_preferences: ^2.0.6
@@ -28,6 +29,7 @@ dependencies:
   package_info_plus: ^8.0.0
   uuid: ^4.4.0
   advertising_id: ^2.6.0
+  qr_code_scanner: ^1.0.1
 
 dev_dependencies:
   flutter_test:
@@ -55,9 +57,33 @@ flutter:
     - assets/ic_laund.jpg
     - assets/fonts/poppins.ttf
     - assets/img/bg_start.webp
+    - assets/img/ic_start.webp
     - assets/img/bg_button.webp
     - assets/img/bg_main.webp
     - assets/img/icon_create.webp
     - assets/img/icon_direction.webp
     - assets/img/icon_menu.webp
     - assets/img/icon_qr_home.webp
+    - assets/img/ic_qr_code.webp
+    - assets/img/img_qr_bg_0.webp
+    - assets/img/img_qr_bg_1.webp
+    - assets/img/img_qr_bg_2.webp
+    - assets/img/img_qr_bg_3.webp
+    - assets/img/img_qr_bg_4.webp
+    - assets/img/img_qr_bg_5.webp
+    - assets/img/img_qr_bg_6.webp
+    - assets/img/img_qr_bg_7.webp
+    - assets/img/img_qr_bg_8.webp
+    - assets/img/img_qr_bg_9.webp
+    - assets/img/img_qr_bg_10.webp
+    - assets/img/img_qr_bg_11.webp
+    - assets/img/img_qr_bg_12.webp
+    - assets/img/img_qr_bg_13.webp
+    - assets/img/img_qr_bg_14.webp
+    - assets/img/ic_qr_code_2.webp
+    - assets/img/icon_back.webp
+    - assets/img/icon_flash_off.webp
+    - assets/img/icon_flash.webp
+    - assets/img/icon_picture.webp
+    - assets/img/icon_search.webp
+    - assets/img/icon_copy.webp

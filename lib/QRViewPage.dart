@@ -6,6 +6,9 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'mob/MobUtils.dart';
+import 'mob/ScanUtils.dart';
+
 class QRViewPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _QRViewPageState();
@@ -21,6 +24,7 @@ class _QRViewPageState extends State<QRViewPage>
   late Animation<double> _animation;
   bool qrLoading = false;
   bool _isProcessing = false;
+  late MobUtils adManager;
 
   @override
   void initState() {
@@ -31,6 +35,9 @@ class _QRViewPageState extends State<QRViewPage>
     )..repeat(reverse: true);
     _animation =
         Tween<double>(begin: 0, end: 200).animate(_animationController);
+    adManager = ScanUtils.getMobUtils(context);
+    adManager.loadAd(AdWhere.SCAN);
+    adManager.loadAd(AdWhere.BACK);
   }
 
   @override
@@ -41,11 +48,32 @@ class _QRViewPageState extends State<QRViewPage>
     }
     controller?.resumeCamera();
   }
-
+  void backFun() async {
+    if (!adManager.canShowAd(AdWhere.BACK)) {
+      adManager.loadAd(AdWhere.BACK);
+    }
+    setState(() {
+      qrLoading = true;
+    });
+    ScanUtils.showScanAd(context, AdWhere.BACK, () {
+      setState(() {
+        qrLoading = false;
+      });
+    }, () {
+      Navigator.pop(context);
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) {
+        if (didPop) {
+          return;
+        }
+        backFun();
+      },
+      child: Stack(
         children: <Widget>[
           QRView(
             key: qrKey,
@@ -57,7 +85,7 @@ class _QRViewPageState extends State<QRViewPage>
             child: IconButton(
               icon: const Icon(Icons.arrow_back, color: Colors.white),
               onPressed: () {
-                Navigator.of(context).pop();
+                backFun();
               },
             ),
           ),
@@ -150,7 +178,7 @@ class _QRViewPageState extends State<QRViewPage>
           _isProcessing = true;
           result = scanData;
         });
-        _navigateToResultPage(scanData.code!);
+        showScanAd(scanData.code!);
       }
     });
   }
@@ -167,7 +195,7 @@ class _QRViewPageState extends State<QRViewPage>
         setState(() {
           _isProcessing = true;
         });
-        _navigateToResultPage(result!.code!);
+        showScanAd(result!.code!);
       }
     }
   }
@@ -181,9 +209,28 @@ class _QRViewPageState extends State<QRViewPage>
       });
     }
   }
-
-  Future<void> _navigateToResultPage(String scanResultData) async {
+  void showScanAd(String scanResultData) async {
     await controller?.pauseCamera(); // Optional: pause the camera while navigating
+
+    if (!adManager.canShowAd(AdWhere.SCAN)) {
+      adManager.loadAd(AdWhere.SCAN);
+    }
+    setState(() {
+      qrLoading = true;
+    });
+    await Future.delayed(const Duration(seconds: 1));
+    ScanUtils.showScanAd(context, AdWhere.SCAN, () {
+      setState(() {
+        qrLoading = false;
+      });
+    }, () {
+      setState(() {
+        qrLoading = false;
+      });
+      _navigateToResultPage(scanResultData);
+    });
+  }
+  Future<void> _navigateToResultPage(String scanResultData) async {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => ScanResult(scanResult: scanResultData),

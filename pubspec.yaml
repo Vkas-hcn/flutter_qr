@@ -30,6 +30,9 @@ dependencies:
   uuid: ^4.4.0
   advertising_id: ^2.6.0
   qr_code_scanner: ^1.0.1
+  qr_flutter: ^4.1.0
+  barcode_widget: ^2.0.1
+  image_gallery_saver: ^2.0.3
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +57,8 @@ flutter:
         - asset: assets/fonts/poppins.ttf
   uses-material-design: true
   assets:
+    - assets/json/ad_data.json
+    - assets/json/sheet.json
     - assets/ic_laund.jpg
     - assets/fonts/poppins.ttf
     - assets/img/bg_start.webp
@@ -87,3 +92,16 @@ flutter:
     - assets/img/icon_picture.webp
     - assets/img/icon_search.webp
     - assets/img/icon_copy.webp
+    - assets/img/ic_nav_logo.webp
+    - assets/img/bg_dialog.webp
+    - assets/img/icon_barcode.webp
+    - assets/img/icon_close.webp
+    - assets/img/icon_email.webp
+    - assets/img/icon_url.webp
+    - assets/img/icon_facebook.webp
+    - assets/img/icon_instagram.webp
+    - assets/img/icon_location.webp
+    - assets/img/icon_text.webp
+    - assets/img/icon_wifi.webp
+    - assets/img/icon_youtube.webp
+    - assets/img/icon_sel.webp

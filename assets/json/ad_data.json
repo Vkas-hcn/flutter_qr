@@ -1,0 +1,28 @@
+{
+  "show_num": 30,
+  "click_num": 1,
+  "ad_open": [
+    {
+      "ad_id": "ca-app-pub-3940256099942544/9257395921",
+      "ad_type": "int",
+      "ad_we": 1,
+      "ad_where": "GUIDE"
+    }
+  ],
+  "ad_scan": [
+    {
+      "ad_id": "ca-app-pub-3940256099942544/8691691433",
+      "ad_type": "int",
+      "ad_we": 1,
+      "ad_where": "SCAN"
+    }
+  ],
+  "ad_back": [
+    {
+      "ad_id": "ca-app-pub-3940256099942544/8691691433",
+      "ad_type": "int",
+      "ad_we": 1,
+      "ad_where": "BACK"
+    }
+  ]
+}

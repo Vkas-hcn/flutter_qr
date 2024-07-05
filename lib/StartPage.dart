@@ -3,9 +3,17 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_qr/HomePage.dart';
-import 'package:flutter_qr/SettingPaper.dart';
-
-
+import 'package:flutter_qr/SaveDataUtils.dart';
+import 'package:flutter_qr/SaveDataUtils.dart';
+import 'package:flutter_qr/SaveDataUtils.dart';
+import 'package:flutter_qr/SaveDataUtils.dart';
+import 'package:flutter_qr/SaveDataUtils.dart';
+import 'package:flutter_qr/SaveDataUtils.dart';
+import 'package:flutter_qr/SaveDataUtils.dart';
+import 'package:flutter_qr/SaveDataUtils.dart';
+import 'package:flutter_qr/mob/MobUtils.dart';
+import 'package:flutter_qr/mob/QrLifeOb.dart';
+import 'package:flutter_qr/mob/ScanUtils.dart';
 
 class StartPage extends StatelessWidget {
   const StartPage({super.key});
@@ -27,40 +35,105 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen>{
   double _progress = 0.0;
-  Timer? _timer;
+  Timer? _timerProgress;
+  Timer? _timerShowOPen;
+
+  late QrLifeOb qrLifeOb;
+  late MobUtils adManager;
+  bool restartState = false;
+  DateTime? _pausedTime;
+
   @override
   void initState() {
     super.initState();
     _startProgress();
+    adManager = ScanUtils.getMobUtils(context);
+    qrLifeOb = QrLifeOb(
+      onAppResumed: _handleAppResumed,
+      onAppPaused: _handleAppPaused,
+    );
+    WidgetsBinding.instance.addObserver(qrLifeOb);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(const Duration(seconds: 2), () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
-        );
-      });
+      setADLoad();
+    });
+  }
+  void setADLoad() async {
+    await ScanUtils.getFileBaseData(() {
+      print("initAdData callback");
+      initAdData();
     });
   }
   void _startProgress() {
-    const int totalDuration = 2000; // Total duration in milliseconds
+    const int totalDuration = 14000; // Total duration in milliseconds
     const int updateInterval = 50; // Update interval in milliseconds
     const int totalUpdates = totalDuration ~/ updateInterval;
 
     int currentUpdate = 0;
 
-    _timer = Timer.periodic(Duration(milliseconds: updateInterval), (timer) {
+    _timerProgress = Timer.periodic(Duration(milliseconds: updateInterval), (timer) {
       setState(() {
         _progress = (currentUpdate + 1) / totalUpdates;
       });
       currentUpdate++;
       if (currentUpdate >= totalUpdates) {
-        _timer?.cancel();
+        _timerProgress?.cancel();
       }
     });
   }
   @override
   void dispose() {
     super.dispose();
+    WidgetsBinding.instance.removeObserver(qrLifeOb);
+  }
+  void _handleAppResumed() {
+    SaveDataUtils.isBackG = false;
+    print("应用恢复前台");
+    if (_pausedTime != null) {
+      final timeInBackground =
+          DateTime.now().difference(_pausedTime!).inSeconds;
+      if (SaveDataUtils.clone_ad == true) {
+        return;
+      }
+      if (SaveDataUtils.openImagePath == true) {
+        SaveDataUtils.openImagePath = false;
+        return;
+      }
+      print("应用恢复前台---${timeInBackground}===${SaveDataUtils.int_ad_show}");
+      if (timeInBackground > 3 && SaveDataUtils.int_ad_show == false) {
+        print("热启动");
+        restartState = true;
+        _restartApp();
+      }
+    }
+  }
+
+  void _restartApp() {
+    restartApp(context);
+  }
+
+  void _handleAppPaused() {
+    SaveDataUtils.isBackG = true;
+    print("应用进入后台");
+    SaveDataUtils.clone_ad = false;
+    _pausedTime = DateTime.now();
+  }
+
+  void pageToHome() {
+    print("pageToHome-----${restartState}");
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const HomePage()),
+    );
+    restartState = false;
+  }
+
+  void initAdData() async {
+    adManager.loadAd(AdWhere.OPEN);
+    adManager.loadAd(AdWhere.SCAN);
+    adManager.loadAd(AdWhere.BACK);
+    Future.delayed(const Duration(seconds: 1), () {
+      showOpenAd();
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -124,8 +197,38 @@ class _WelcomeScreenState extends State<WelcomeScreen>{
       ),
     );
   }
-
-
+  void restartApp(BuildContext context) {
+    Navigator.of(context).removeRoute(ModalRoute.of(context) as Route);
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const StartPage()),
+            (route) => route == null);
+  }
+  void showOpenAd() {
+    int elapsed = 0;
+    const int timeout = 10000;
+    const int interval = 500;
+    print("准备展示open广告");
+    _timerShowOPen = Timer.periodic(const Duration(milliseconds: interval), (timer) {
+      elapsed += interval;
+      if (SaveDataUtils.ad_more && !adManager.canShowAd(AdWhere.OPEN)) {
+        print("广告超限，直接进入首页");
+        pageToHome();
+        timer.cancel();
+        return;
+      }
+      if (adManager.canShowAd(AdWhere.OPEN)) {
+        adManager.showAd(context, AdWhere.OPEN, () {
+          pageToHome();
+        });
+        timer.cancel();
+      } else if (elapsed >= timeout) {
+        print("超时，直接进入首页");
+        pageToHome();
+        timer.cancel();
+      }
+    });
+  }
 }
 class ProgressBar extends StatelessWidget {
   final double progress;

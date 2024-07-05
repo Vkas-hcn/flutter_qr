@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_qr/CreateDataPage.dart';
-import 'package:flutter_qr/FeaturedPage.dart';
 import 'package:flutter_qr/SaveDataUtils.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'dart:io';
-import 'QRViewPage.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class FeaturedPage extends StatefulWidget {
+  const FeaturedPage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<FeaturedPage> createState() => _FeaturedPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _FeaturedPageState extends State<FeaturedPage> {
   bool qrLoading = false;
   bool createDialog = false;
 
@@ -38,83 +33,12 @@ class _HomePageState extends State<HomePage> {
         return false;
       },
       child: Scaffold(
-        drawer: Drawer(
-          child: Container(
-            color: Color(0xFF040A25),
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: <Widget>[
-                DrawerHeader(
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF040A25),
-                  ),
-                  margin: EdgeInsets.only(bottom: 49),
-                  curve: Curves.fastOutSlowIn,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 60,
-                        height: 60,
-                        child: Image.asset('assets/img/ic_nav_logo.webp'),
-                      ),
-                      const SizedBox(width: 12),
-                      const Text(
-                        'App Name',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                ListTile(
-                  trailing: const Icon(Icons.arrow_forward_ios),
-                  title: const Text('User Terms',
-                      style: TextStyle(
-                        fontFamily: 'poppins',
-                        color: Colors.white,
-                        fontSize: 14,
-                      )),
-                  onTap: () {
-                    _launchURL();
-                  },
-                ),
-                const SizedBox(height: 32),
-                const Divider(
-                  height: 1,
-                  // 分割线的高度
-                  color: Color(0xFF4F5367),
-                  // 分割线的颜色
-                  thickness: 1,
-                  // 分割线的厚度
-                  indent: 20,
-                  // 分割线开始的缩进
-                  endIndent: 20,
-                ),
-                const SizedBox(height: 32),
-                ListTile(
-                  trailing: const Icon(Icons.arrow_forward_ios),
-                  title: const Text('Privacy Policy',
-                      style: TextStyle(
-                        fontFamily: 'poppins',
-                        color: Colors.white,
-                        fontSize: 14,
-                      )),
-                  onTap: () {
-                    _launchURL();
-                  },
-                ),
-              ],
-            ),
-          ),
-        ),
-        body: _buildHomePage(context),
+        body: _buildFeaturedPage(context),
       ),
     );
   }
 
-  Widget _buildHomePage(BuildContext context) {
+  Widget _buildFeaturedPage(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
@@ -124,148 +48,39 @@ class _HomePageState extends State<HomePage> {
       ),
       child: Stack(children: [
         Padding(
-          padding: const EdgeInsets.only(top: 56),
+          padding: const EdgeInsets.only(
+            top: 56,
+          ),
           child: Align(
             alignment: Alignment.topCenter,
             child: Stack(children: [
               Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 20),
-                        child: Text("App Name",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Color(0xFFFFFFFF),
-                            )),
-                      ),
-                      Builder(
-                        builder: (BuildContext context) {
-                          return GestureDetector(
-                            onTap: () {
-                              Scaffold.of(context).openDrawer();
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 20),
-                              child: SizedBox(
-                                width: 24,
-                                height: 24,
-                                child: Image.asset('assets/img/icon_menu.webp'),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20, top: 24),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => QRViewPage()),
-                            );
-                          },
-                          child: Stack(alignment: Alignment.center, children: [
-                            SizedBox(
-                              width: 154,
-                              height: 184,
-                              child: Image.asset('assets/img/bg_button.webp'),
-                            ),
-                            Column(
-                              children: [
-                                SizedBox(
-                                  width: 100,
-                                  height: 100,
-                                  child: Image.asset(
-                                      'assets/img/icon_qr_home.webp'),
-                                ),
-                                const Text('QR Scan',
-                                    style: TextStyle(
-                                      fontFamily: 'poppins',
-                                      fontSize: 16,
-                                      color: Color(0xFFFFFFFF),
-                                    ))
-                              ],
-                            ),
-                          ]),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20, top: 24),
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              createDialog = true;
-                            });
-                          },
-                          child: Stack(alignment: Alignment.center, children: [
-                            SizedBox(
-                              width: 154,
-                              height: 184,
-                              child: Image.asset('assets/img/bg_button.webp'),
-                            ),
-                            Column(
-                              children: [
-                                SizedBox(
-                                  width: 100,
-                                  height: 100,
-                                  child: Image.asset(
-                                      'assets/img/icon_create.webp'),
-                                ),
-                                const Text('Create',
-                                    style: TextStyle(
-                                      fontFamily: 'poppins',
-                                      fontSize: 16,
-                                      color: Color(0xFFFFFFFF),
-                                    ))
-                              ],
-                            ),
-                          ]),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(top: 24, left: 20, right: 20),
-                    child: GestureDetector(
-                      onTap: (){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const FeaturedPage()),
-                        );
-                      },
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          const SizedBox(width: 16),
-                          const Text(
-                            "Featured styles",
-                            style: TextStyle(
-                              fontFamily: "poppins",
-                              fontSize: 16,
-                              fontWeight: FontWeight.w800,
-                              color: Color(0xFFFFFFFF),
-                            ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: 20),
+                          child: Icon(
+                            Icons.arrow_back,
+                            color: Color(0xFFFFFFFF),
+                            size: 30,
                           ),
-                          const Spacer(),
-                          SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: Image.asset('assets/img/icon_direction.webp'),
-                          ),
-                        ],
-                      ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 8),
+                          child: Text("Featured styles",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Color(0xFFFFFFFF),
+                              )),
+                        ),
+                      ],
                     ),
                   ),
                   Expanded(
@@ -329,15 +144,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _launchURL() async {
-    //TODO: Replace with your own url
-    const url = 'https://flutterchina.club/';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      _showToast('Cant open web page $url');
-    }
-  }
 
   void _showToast(String message) {
     Fluttertoast.showToast(
@@ -401,9 +207,7 @@ class CustomDialog extends StatelessWidget {
               Align(
                 alignment: Alignment.topRight,
                 child: GestureDetector(
-                  onTap: (){
-                    onClose();
-                  },
+                  onTap: onClose,
                   child: Padding(
                     padding: const EdgeInsets.all(18),
                     child: SizedBox(

@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'CreateDataPage.dart';
+import 'mob/MobUtils.dart';
+import 'mob/ScanUtils.dart';
 
 class ScanResult extends StatefulWidget {
   final String scanResult;
@@ -15,17 +20,34 @@ class ScanResult extends StatefulWidget {
 
 class _ScanResultState extends State<ScanResult> {
   bool qrLoading = false;
+  late MobUtils adManager;
 
   @override
   void initState() {
     super.initState();
+    adManager = ScanUtils.getMobUtils(context);
+    adManager.loadAd(AdWhere.BACK);
   }
 
   @override
   void dispose() {
     super.dispose();
   }
-
+  void backFun() async {
+    if (!adManager.canShowAd(AdWhere.BACK)) {
+      adManager.loadAd(AdWhere.BACK);
+    }
+    setState(() {
+      qrLoading = true;
+    });
+    ScanUtils.showScanAd(context, AdWhere.BACK, () {
+      setState(() {
+        qrLoading = false;
+      });
+    }, () {
+      Navigator.pop(context);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -34,7 +56,7 @@ class _ScanResultState extends State<ScanResult> {
         if (didPop) {
           return;
         }
-        Navigator.of(context).pop();
+        backFun();
       },
       child: Scaffold(
         body: _buildScanResult(context, widget.scanResult),
@@ -52,7 +74,7 @@ class _ScanResultState extends State<ScanResult> {
       ),
       child: Stack(children: [
         Padding(
-          padding: const EdgeInsets.only(top: 86),
+          padding: const EdgeInsets.only(top: 56),
           child: Align(
             alignment: Alignment.topCenter,
             child: Column(
@@ -64,7 +86,7 @@ class _ScanResultState extends State<ScanResult> {
                     IconButton(
                       icon: const Icon(Icons.arrow_back, color: Colors.white),
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        backFun();
                       },
                     ),
                     const Text("Result",
@@ -77,7 +99,7 @@ class _ScanResultState extends State<ScanResult> {
                 ),
                 Padding(
                   padding:
-                      const EdgeInsets.only(left: 20.0, right: 20.0, top: 29),
+                  const EdgeInsets.only(left: 20.0, right: 20.0, top: 29),
                   child: Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
@@ -133,7 +155,7 @@ class _ScanResultState extends State<ScanResult> {
                 ),
                 Padding(
                   padding:
-                      const EdgeInsets.only(left: 20.0, right: 20.0, top: 32),
+                  const EdgeInsets.only(left: 20.0, right: 20.0, top: 32),
                   child: Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
@@ -141,23 +163,23 @@ class _ScanResultState extends State<ScanResult> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child:
-                        GestureDetector(
-                          onTap: (){
-                            Navigator.of(context).pop();
-                          },
-                          child: const SizedBox(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                "Continue scanning",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.white,
-                                ),
-                              ),
+                    GestureDetector(
+                      onTap: () {
+                        backFun();
+                      },
+                      child: const SizedBox(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Continue scanning",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
                             ),
                           ),
                         ),
+                      ),
+                    ),
 
                   ),
                 ),
@@ -170,22 +192,39 @@ class _ScanResultState extends State<ScanResult> {
                       color: const Color(0xFF040A25),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const SizedBox(
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              "Generate QR code",
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.white,
-                              ),
+                    child: GestureDetector(
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                               const CreateDataPage()),
+                        );
+                      },
+                      child: const SizedBox(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Generate QR code",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
                             ),
                           ),
                         ),
+                      ),
+                    ),
 
                   ),
                 ),
-
+                qrLoading
+                    ? Center(
+                  child: LoadingAnimationWidget.waveDots(
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                )
+                    : Container(),
               ],
             ),
           ),
@@ -205,14 +244,17 @@ class _ScanResultState extends State<ScanResult> {
       fontSize: 16.0,
     );
   }
-  //复制文本
+
   void _copyText(String text) {
     Clipboard.setData(ClipboardData(text: text));
     _showToast('Copied to clipboard');
   }
+
   Future<void> launchSearchOrUrl(String input) async {
     final Uri url;
-    if (Uri.tryParse(input)?.hasAbsolutePath ?? false) {
+    if (Uri
+        .tryParse(input)
+        ?.hasAbsolutePath ?? false) {
       url = Uri.parse(input);
     } else {
       final query = Uri.encodeComponent(input);
@@ -222,7 +264,8 @@ class _ScanResultState extends State<ScanResult> {
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     } else {
-      throw 'Could not launch $url';
+      final query = Uri.encodeComponent(input);
+      await launchUrl(Uri.parse('https://www.google.com/search?q=$query'));
     }
   }
 }

@@ -14,7 +14,7 @@ import '../SaveDataUtils.dart';
 
 class ClockUtils with ChangeNotifier {
   static const String BLACK_URL =
-      "https://lily.translatenowcamera.com/amaze/dozen";
+      "https://madhya.swiftscannerpro.com/eclectic/italic/bode";
   static String fqaId = "";
 
   static String getUUID() {
@@ -63,16 +63,16 @@ class ClockUtils with ChangeNotifier {
     advertisingId = await SaveDataUtils.getString(SaveDataUtils.advertisingId);
 
     return {
-      "hear": fqaId, // You need to replace fqa_id with actual value
-      "boxwood": DateTime.now().millisecondsSinceEpoch,
-      "oclock": androidInfo.model,
-      "comanche": "com.camtranslate.now",
-      "wagner": androidInfo.version.release,
+      "exert": fqaId, // You need to replace fqa_id with actual value
+      "roil": DateTime.now().millisecondsSinceEpoch,
+      "edna": androidInfo.model,
+      "typeset": "com.swiftscanner.pro",
+      "crowd": androidInfo.version.release,
       "leander": "", // GAID is not directly available, you may need a plugin
-      "antler": androidInfo.id, // androidInfo.andro,
-      "forensic": "wing",
+      "dollop": androidInfo.id, // androidInfo.andro,
+      "variant": "toll",
       "clammy": advertisingId,
-      "tektite": await getAppVersion(context),
+      "bluebush": await getAppVersion(context),
     };
   }
 

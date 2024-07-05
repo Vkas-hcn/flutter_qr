@@ -14,7 +14,7 @@ import '../SaveDataUtils.dart';
 
 class ClockUtils with ChangeNotifier {
   static const String BLACK_URL =
-      "https://lily.translatenowcamera.com/amaze/dozen";
+      "https://gift.swiftscannerpro.com/hacienda/revving";
   static String fqaId = "";
 
   static String getUUID() {
@@ -58,21 +58,20 @@ class ClockUtils with ChangeNotifier {
 
   Future<Map<String, dynamic>> cloakMapData(BuildContext context) async {
     final deviceInfo = DeviceInfoPlugin();
-    final androidInfo = await deviceInfo.androidInfo;
+    final androidInfo = await deviceInfo.iosInfo;
     String? advertisingId;
     advertisingId = await SaveDataUtils.getString(SaveDataUtils.advertisingId);
 
     return {
-      "hear": fqaId, // You need to replace fqa_id with actual value
-      "boxwood": DateTime.now().millisecondsSinceEpoch,
-      "oclock": androidInfo.model,
-      "comanche": "com.camtranslate.now",
-      "wagner": androidInfo.version.release,
-      "leander": "", // GAID is not directly available, you may need a plugin
-      "antler": androidInfo.id, // androidInfo.andro,
-      "forensic": "wing",
+      "indium": fqaId,
+      "linton": DateTime.now().millisecondsSinceEpoch,
+      "detector": androidInfo.model,
+      "trunk": "com.swiftscan.pro",
+      "nikolai": androidInfo.isPhysicalDevice,
+      "quote": androidInfo.identifierForVendor,
+      "granite": "cameron",
       "clammy": advertisingId,
-      "tektite": await getAppVersion(context),
+      "eighth": await getAppVersion(context),
     };
   }
 

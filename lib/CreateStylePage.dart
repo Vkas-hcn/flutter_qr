@@ -93,6 +93,9 @@ class _CreateStylePageState extends State<CreateStylePage> {
         qrLoading = false;
       });
     }, () {
+      setState(() {
+        qrLoading = false;
+      });
       Navigator.pop(context);
     });
   }
@@ -345,9 +348,19 @@ class _CreateStylePageState extends State<CreateStylePage> {
                 ),
                 qrLoading
                     ? Center(
-                  child: LoadingAnimationWidget.waveDots(
-                    color: Colors.white,
-                    size: 30,
+                  child: Container(
+
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF252325),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 50),
+                      child: LoadingAnimationWidget.waveDots(
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                    ),
                   ),
                 )
                     : Container(),

@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_qr/mob/sheet_bean.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:provider/provider.dart';
 
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -146,5 +147,17 @@ class ScanUtils {
     }
     print("插屏广告展示超时");
     nextFun();
+  }
+  static Future<String?> scanQRCodeFromFilePath(String filePath) async {
+    final inputImage = InputImage.fromFilePath(filePath);
+    final barcodeScanner = GoogleMlKit.vision.barcodeScanner();
+    final List<Barcode> barcodes = await barcodeScanner.processImage(inputImage);
+
+    for (Barcode barcode in barcodes) {
+      if (barcode.format == BarcodeFormat.qrCode) {
+        return barcode.displayValue;
+      }
+    }
+    return null;
   }
 }

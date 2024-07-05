@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_qr/ScanResult.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:image_picker/image_picker.dart';
-
 import 'mob/MobUtils.dart';
 import 'mob/ScanUtils.dart';
 
@@ -60,6 +60,9 @@ class _QRViewPageState extends State<QRViewPage>
         qrLoading = false;
       });
     }, () {
+      setState(() {
+        qrLoading = false;
+      });
       Navigator.pop(context);
     });
   }
@@ -156,11 +159,20 @@ class _QRViewPageState extends State<QRViewPage>
           ),
           qrLoading
               ? Center(
-                  child: LoadingAnimationWidget.waveDots(
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                )
+            child: Container(
+              decoration: BoxDecoration(
+                color: const Color(0xFF252325),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 50),
+                child: LoadingAnimationWidget.waveDots(
+                  color: Colors.white,
+                  size: 30,
+                ),
+              ),
+            ),
+          )
               : Container(),
         ],
       ),
@@ -195,11 +207,27 @@ class _QRViewPageState extends State<QRViewPage>
         setState(() {
           _isProcessing = true;
         });
-        showScanAd(result!.code!);
+        final filePath = image.path;
+        final qrCode = await ScanUtils.scanQRCodeFromFilePath(filePath);
+        if(qrCode!=null){
+          showScanAd(qrCode);
+        }else{
+          _showToast("no data");
+        }
       }
     }
   }
-
+  void _showToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.black54,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
   Future<void> _toggleFlash() async {
     if (controller != null) {
       await controller!.toggleFlash();

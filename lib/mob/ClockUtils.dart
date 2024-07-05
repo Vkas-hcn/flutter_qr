@@ -19,7 +19,7 @@ class ClockUtils with ChangeNotifier {
 
   static String getUUID() {
     var uuid = Uuid();
-    return uuid.v4(); // 生成一个唯一的UUID v4
+    return uuid.v4();
   }
 
   static void initializeFqaId() {

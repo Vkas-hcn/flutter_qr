@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       const SizedBox(width: 12),
                       const Text(
-                        'App Name',
+                        'Swift Scanner Pro',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 24,
@@ -68,31 +68,6 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
-                ListTile(
-                  trailing: const Icon(Icons.arrow_forward_ios),
-                  title: const Text('User Terms',
-                      style: TextStyle(
-                        fontFamily: 'poppins',
-                        color: Colors.white,
-                        fontSize: 14,
-                      )),
-                  onTap: () {
-                    _launchURL();
-                  },
-                ),
-                const SizedBox(height: 32),
-                const Divider(
-                  height: 1,
-                  // 分割线的高度
-                  color: Color(0xFF4F5367),
-                  // 分割线的颜色
-                  thickness: 1,
-                  // 分割线的厚度
-                  indent: 20,
-                  // 分割线开始的缩进
-                  endIndent: 20,
-                ),
-                const SizedBox(height: 32),
                 ListTile(
                   trailing: const Icon(Icons.arrow_forward_ios),
                   title: const Text('Privacy Policy',
@@ -136,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       const Padding(
                         padding: EdgeInsets.only(left: 20),
-                        child: Text("App Name",
+                        child: Text("Swift Scanner Pro",
                             style: TextStyle(
                               fontSize: 20,
                               color: Color(0xFFFFFFFF),

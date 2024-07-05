@@ -162,7 +162,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>{
                     ),
                     const SizedBox(height: 24),
                     const Text(
-                      'APP Name',
+                      'Swift Scanner Pro',
                       style: TextStyle(
                         fontFamily: 'poppins',
                         fontSize: 20,

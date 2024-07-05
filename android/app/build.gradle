@@ -53,10 +53,17 @@ android {
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
     }
-
+    signingConfigs {
+        release {
+            keyAlias 'ssp'
+            keyPassword 'ssp123456'
+            storeFile file('ssp.jks')
+            storePassword 'ssp123456'
+        }
+    }
     buildTypes {
         release {
-            signingConfig = signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'

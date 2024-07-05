@@ -185,7 +185,7 @@ class _CreateStylePageState extends State<CreateStylePage> {
                       height: 184,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage(SaveDataUtils.imagePaths[qrStyle]),
+                          image: AssetImage(qrDataType == "Barcode"?SaveDataUtils.imagePaths[0]:SaveDataUtils.imagePaths[qrStyle]),
                           fit: BoxFit.cover,
                         ),
                         borderRadius: BorderRadius.circular(12.0),

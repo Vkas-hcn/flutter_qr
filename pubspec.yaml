@@ -33,6 +33,7 @@ dependencies:
   qr_flutter: ^4.1.0
   barcode_widget: ^2.0.1
   image_gallery_saver: ^2.0.3
+  google_ml_kit: ^0.10.0
 
 dev_dependencies:
   flutter_test:

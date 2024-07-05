@@ -86,6 +86,7 @@ class _CreateDataPageState extends State<CreateDataPage> {
   void seCState() async {
     createdState = (await SaveDataUtils.getString(SaveDataUtils.createState))!;
   }
+
   void backFun() async {
     if (!adManager.canShowAd(AdWhere.BACK)) {
       adManager.loadAd(AdWhere.BACK);
@@ -98,9 +99,13 @@ class _CreateDataPageState extends State<CreateDataPage> {
         qrLoading = false;
       });
     }, () {
+      setState(() {
+        qrLoading = false;
+      });
       Navigator.pop(context);
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -183,11 +188,21 @@ class _CreateDataPageState extends State<CreateDataPage> {
                 getCreateView(),
                 qrLoading
                     ? Center(
-                  child: LoadingAnimationWidget.waveDots(
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                )
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF252325),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 30, horizontal: 50),
+                            child: LoadingAnimationWidget.waveDots(
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                          ),
+                        ),
+                      )
                     : Container(),
               ],
             ),
@@ -231,6 +246,7 @@ class _CreateDataPageState extends State<CreateDataPage> {
       showCreateBut = data;
     });
   }
+
   void showScanAd() async {
     if (!adManager.canShowAd(AdWhere.SCAN)) {
       adManager.loadAd(AdWhere.SCAN);
@@ -244,9 +260,13 @@ class _CreateDataPageState extends State<CreateDataPage> {
         qrLoading = false;
       });
     }, () {
+      setState(() {
+        qrLoading = false;
+      });
       jumpToCreateStylePage();
     });
   }
+
   void jumpToCreateStylePage() async {
     String? state = await SaveDataUtils.getString(SaveDataUtils.createState);
     String qrData = (() {
@@ -322,6 +342,13 @@ class _CreateDataPageState extends State<CreateDataPage> {
           qrDataType: qrDataType,
           textController: textController,
         );
+      case "Location":
+        return QrLocationInput(
+          countryController: countryController,
+          cityController: cityController,
+          longitudeController: longitudeController,
+          latitudeController: latitudeController,
+        );
       case "Wi-Fi":
         return QrWIFIInput(
           netController: netController,
@@ -381,6 +408,9 @@ class QrDataInput extends StatelessWidget {
                   child: SizedBox(
                     height: 200,
                     child: TextField(
+                      keyboardType: qrDataType == "Barcode"
+                          ? TextInputType.number
+                          : TextInputType.text,
                       inputFormatters: qrDataType == "Barcode"
                           ? [
                               FilteringTextInputFormatter.allow(

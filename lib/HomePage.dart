@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       const SizedBox(width: 12),
                       const Text(
-                        'App Name',
+                        'Swift Scanner Pro',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 24,
@@ -136,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       const Padding(
                         padding: EdgeInsets.only(left: 20),
-                        child: Text("App Name",
+                        child: Text("Swift Scanner Pro",
                             style: TextStyle(
                               fontSize: 20,
                               color: Color(0xFFFFFFFF),

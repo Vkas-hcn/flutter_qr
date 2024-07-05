@@ -6,6 +6,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'CreateDataPage.dart';
+import 'FeaturedPage.dart';
 import 'mob/MobUtils.dart';
 import 'mob/ScanUtils.dart';
 
@@ -21,6 +22,7 @@ class ScanResult extends StatefulWidget {
 class _ScanResultState extends State<ScanResult> {
   bool qrLoading = false;
   late MobUtils adManager;
+  bool createDialog = false;
 
   @override
   void initState() {
@@ -194,12 +196,9 @@ class _ScanResultState extends State<ScanResult> {
                     ),
                     child: GestureDetector(
                       onTap: (){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                               const CreateDataPage()),
-                        );
+                        setState(() {
+                          createDialog = true;
+                        });
                       },
                       child: const SizedBox(
                         child: Align(
@@ -217,6 +216,7 @@ class _ScanResultState extends State<ScanResult> {
 
                   ),
                 ),
+
                 qrLoading
                     ? Center(
                   child: LoadingAnimationWidget.waveDots(
@@ -229,6 +229,14 @@ class _ScanResultState extends State<ScanResult> {
             ),
           ),
         ),
+        if (createDialog)
+          CustomDialog(
+            onClose: () {
+              setState(() {
+                createDialog = false;
+              });
+            },
+          ),
       ]),
     );
   }

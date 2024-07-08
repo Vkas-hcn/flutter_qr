@@ -60,21 +60,21 @@ class MobUtils {
     SaveDataUtils.ad_more = false;
     switch (adPosition) {
       case AdWhere.OPEN:
-        _loadAppOpenAd(adList.ad_open);
+        _loadAppOpenAd(adList.rty);
         break;
       case AdWhere.SCAN:
       case AdWhere.BACK:
         _loadInterstitialAd(
             adPosition == AdWhere.SCAN
-                ? adList.ad_scan
-                : adList.ad_back,
+                ? adList.uui
+                : adList.gfh,
             adPosition);
         break;
     }
   }
 
   List<AdBean> sortAdsByWe(List<AdBean> ads) {
-    ads.sort((a, b) => b.ad_we.compareTo(a.ad_we));
+    ads.sort((a, b) => b.kk.compareTo(a.kk));
     return List<AdBean>.from(ads);
   }
 
@@ -94,9 +94,9 @@ class MobUtils {
     }
     _isAppOpenAdLoading = true;
     AdBean adBean = adListBean[index];
-    print("加载open广告 ad_id=${adBean.ad_id}，ad_we=${adBean.ad_we}");
+    print("加载open广告 pp=${adBean.pp}，kk=${adBean.kk}");
     AppOpenAd.load(
-      adUnitId: adBean.ad_id,
+      adUnitId: adBean.pp,
       request: AdRequest(),
       adLoadCallback: AppOpenAdLoadCallback(
         onAdLoaded: (ad) {
@@ -126,9 +126,9 @@ class MobUtils {
     if (index >= adListBean.length) return;
     _isInterstitialAdLoading = true;
     AdBean adBean = adListBean[index];
-    print("加载$adPosition广告 ad_id=${adBean.ad_id}，ad_we=${adBean.ad_we}");
+    print("加载$adPosition广告 pp=${adBean.pp}，kk=${adBean.kk}");
     InterstitialAd.load(
-      adUnitId: adBean.ad_id,
+      adUnitId: adBean.pp,
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
@@ -285,8 +285,8 @@ class MobUtils {
     var showNum = await SaveDataUtils.getInt(SaveDataUtils.ad_show_counts) ?? 0;
     print("clickNum=$clickNum, showNum=$showNum");
     print(
-        "adBean.click_num=${adBean.click_num}, adBean.show_num=${adBean.show_num}");
+        "adBean.ss=${adBean.ss}, adBean.qq=${adBean.qq}");
 
-    return (clickNum < adBean.click_num) && (showNum < adBean.show_num);
+    return (clickNum < adBean.ss) && (showNum < adBean.qq);
   }
 }

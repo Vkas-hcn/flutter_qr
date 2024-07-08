@@ -36,7 +36,7 @@ class SaveDataUtils {
   static String adDataKey = 'servant';
   static String clockDataKey = 'sheet';
 
-  static String adData = 'adData';
+  static String iwer = 'iwer';
 
   static String clockData = 'clockData';
   static String last_reset = "last_reset";
@@ -50,7 +50,7 @@ class SaveDataUtils {
   static const String appOpenAdKey = "appOpenAdKey";
   static bool isBackG = false;
 
-  static String sheet = "sheet";
+  static String hap66 = "hap66";
 
   static String createState = "createState";
   static String createQrBg = "createQrBg";

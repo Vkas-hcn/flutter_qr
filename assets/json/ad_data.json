@@ -1,28 +1,28 @@
 {
-  "show_num": 30,
-  "click_num": 1,
-  "ad_open": [
+  "qq": 30,
+  "ss": 1,
+  "rty": [
     {
-      "ad_id": "ca-app-pub-3940256099942544/9257395921",
-      "ad_type": "int",
-      "ad_we": 1,
-      "ad_where": "GUIDE"
+      "pp": "ca-app-pub-3940256099942544/9257395921",
+      "ll": "int",
+      "kk": 1,
+      "mm": "OPEN"
     }
   ],
-  "ad_scan": [
+  "uui": [
     {
-      "ad_id": "ca-app-pub-3940256099942544/8691691433",
-      "ad_type": "int",
-      "ad_we": 1,
-      "ad_where": "SCAN"
+      "pp": "ca-app-pub-3940256099942544/8691691433",
+      "ll": "int",
+      "kk": 1,
+      "mm": "SCAN"
     }
   ],
-  "ad_back": [
+  "gfh": [
     {
-      "ad_id": "ca-app-pub-3940256099942544/8691691433",
-      "ad_type": "int",
-      "ad_we": 1,
-      "ad_where": "BACK"
+      "pp": "ca-app-pub-3940256099942544/8691691433",
+      "ll": "int",
+      "kk": 1,
+      "mm": "BACK"
     }
   ]
 }

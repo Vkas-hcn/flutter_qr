@@ -71,13 +71,12 @@ class ScanUtils {
       // Fetch and activate remote config values
       remoteConfig.fetchAndActivate().then((_) {
         var adData = remoteConfig.getString(SaveDataUtils.adDataKey);
-        SaveDataUtils.saveString(SaveDataUtils.adData, adData);
+        SaveDataUtils.saveString(SaveDataUtils.iwer, adData);
         var clockData = remoteConfig.getString(SaveDataUtils.clockDataKey);
-        SaveDataUtils.saveString(SaveDataUtils.sheet, clockData);
+        SaveDataUtils.saveString(SaveDataUtils.hap66, clockData);
         isCa = true;
       });
 
-      // Wait for isCa to be true, but timeout after 4 seconds
       await Future.any([
         Future.delayed(const Duration(seconds: 4)),
         Future.doWhile(() async {

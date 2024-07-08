@@ -359,17 +359,7 @@ class _CreateStylePageState extends State<CreateStylePage> {
     );
   }
 
-  void _showToast(String message) {
-    Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.black54,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
-  }
+
 }
 
 class CustomCircle extends StatelessWidget {

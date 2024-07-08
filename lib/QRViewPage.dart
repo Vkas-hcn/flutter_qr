@@ -1,7 +1,10 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_qr/ScanResult.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:huawei_scan/huawei_scan.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:image_picker/image_picker.dart';
@@ -48,6 +51,7 @@ class _QRViewPageState extends State<QRViewPage>
     }
     controller?.resumeCamera();
   }
+
   void backFun() async {
     if (!adManager.canShowAd(AdWhere.BACK)) {
       adManager.loadAd(AdWhere.BACK);
@@ -63,6 +67,7 @@ class _QRViewPageState extends State<QRViewPage>
       Navigator.pop(context);
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -195,9 +200,49 @@ class _QRViewPageState extends State<QRViewPage>
         setState(() {
           _isProcessing = true;
         });
-        showScanAd(result!.code!);
+        File imageFile = File(image.path);
+        analyzeQRCode(imageFile);
       }
     }
+  }
+
+  Future<void> analyzeQRCode(File imageFile) async {
+    try {
+      Uint8List imageData = await imageFile.readAsBytes();
+      DecodeRequest request = DecodeRequest(
+        data: imageData,
+        scanType: HmsScanTypes.AllScanType,
+        photoMode: true,
+      );
+      ScanResponseList responseList =
+          await HmsScanUtils.decodeWithBitmap(request);
+      ;
+      if (responseList.scanResponseList != null &&
+          responseList.scanResponseList!.isNotEmpty) {
+        ScanResponse? response = responseList.scanResponseList!.first;
+        if (response != null) {
+          showScanAd(response.originalValue!);
+        } else {
+          showTextToast('No QR code found in the image.');
+        }
+      } else {
+        showTextToast('No QR code found in the image.');
+      }
+    } catch (e) {
+      showTextToast('Error analyzing QR code: $e');
+    }
+  }
+
+  void showTextToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.black54,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
   }
 
   Future<void> _toggleFlash() async {
@@ -209,8 +254,10 @@ class _QRViewPageState extends State<QRViewPage>
       });
     }
   }
+
   void showScanAd(String scanResultData) async {
-    await controller?.pauseCamera(); // Optional: pause the camera while navigating
+    await controller
+        ?.pauseCamera(); // Optional: pause the camera while navigating
 
     if (!adManager.canShowAd(AdWhere.SCAN)) {
       adManager.loadAd(AdWhere.SCAN);
@@ -230,16 +277,20 @@ class _QRViewPageState extends State<QRViewPage>
       _navigateToResultPage(scanResultData);
     });
   }
+
   Future<void> _navigateToResultPage(String scanResultData) async {
-    Navigator.of(context).push(
+    Navigator.of(context)
+        .push(
       MaterialPageRoute(
         builder: (context) => ScanResult(scanResult: scanResultData),
       ),
-    ).then((_) {
+    )
+        .then((_) {
       setState(() {
         _isProcessing = false; // Reset the processing flag when coming back
       });
-      controller?.resumeCamera(); // Optional: resume the camera when coming back
+      controller
+          ?.resumeCamera(); // Optional: resume the camera when coming back
     });
   }
 
